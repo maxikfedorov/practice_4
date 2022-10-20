@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ChatController {
 
-    @GetMapping("/webs")
+    @GetMapping("/webs") //обращение к клиентской части по адресу webs
     public String getChat(){
-        return "indexxx";
+        return "index";
     }
 
-
-    @MessageMapping("/chat.send")
-    @SendTo("/topic")
+    @MessageMapping("/chat.send") //связывание метода контроллера с настроенной конечной точкой
+    @SendTo("/topic") //Все подписчики на пункте назначения « / topic » получат сообщение
     public String sendMessage(@Payload final String chatMessage){
         return chatMessage;
     }

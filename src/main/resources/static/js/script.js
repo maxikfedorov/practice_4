@@ -34,9 +34,10 @@ function createMessageLine(message){
 
 $(function (){
     const socket = new SockJS('/chat-example')
-    stompClient = Stomp.over(socket)
-    stompClient.connect({}, onConnected, onError)
+    stompClient = Stomp.over(socket) //У нас есть формат стандартного сообщения и поддержка на стороне клиента.
+    stompClient.connect({}, onConnected, onError) //обработка соединения пользователя
 })
+
 const onConnected = options => {
     stompClient.subscribe('/topic', onMessageReceived)
 }
@@ -48,8 +49,8 @@ const onError = (error) => {
 }
 
 const sendMessage = (event) => {
-    const messageInput = document.querySelector('#message')
-    const messageContent = messageInput.value.trim();
+    const messageInput = document.querySelector('#message') //возвращает первого потомка запроса
+    const messageContent = messageInput.value.trim(); //обрезаем пробелы
 
     if (messageContent && stompClient) {
         stompClient.send("/app/chat.send", {}, JSON.stringify(messageContent))
@@ -59,7 +60,7 @@ const sendMessage = (event) => {
 }
 
 
-const onMessageReceived = (payload) => {
+const onMessageReceived = (payload) => { //отправляем данные в теле json
     const message = JSON.parse(payload.body);
     createMessageLine(message);
 }
@@ -67,7 +68,7 @@ var input = document.getElementById("message");
 
 input.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
-        event.preventDefault();
+        event.preventDefault(); //сообщает пользовательскому агенту, что если событие не обрабатывается явно, его действие по умолчанию не должно выполняться, как обычно.
         sendMessage();
     }
 });
